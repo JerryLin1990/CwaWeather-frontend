@@ -4,25 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>森森天氣</title>
-    <link rel="icon" type="image/png" href="./icon-v2.png">
-    <link rel="apple-touch-icon" href="./icon-v2.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./icon-v2.png">
+    <title>點點天氣</title>
+    <link rel="icon" type="image/png" href="./pixel-icon.png">
+    <link rel="apple-touch-icon" href="./pixel-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./pixel-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --ac-green: #7DE1A9;
-            --ac-bg-pattern: #8FD8AF;
-            --ac-cream: #FFFEF2;
-            --ac-yellow: #F9F195;
-            --ac-brown: #796452;
-            --ac-blue: #4FB5D9;
-            --ac-dark: #58504A;
-            --ac-card-border: #E6E0C8;
+            --game-body: #C0C0C0;
+            /* Game Boy Classic (綠色) - 預設 */
+            --game-screen-bg: #9bbc0f;
+            --game-screen-dark: #0f380f;
+            --game-screen-light: #8bac0f;
+            --game-screen-lightest: #9bbc0f;
+        }
+
+        /* Game Boy Pocket (灰階) */
+        body[data-theme="pocket"] {
+            --game-screen-bg: #c4cfa1;
+            --game-screen-dark: #43523d;
+            --game-screen-light: #8b956d;
+            --game-screen-lightest: #c4cfa1;
+        }
+
+        /* Game Boy Light (金色) */
+        body[data-theme="light"] {
+            --game-screen-bg: #f7e7c6;
+            --game-screen-dark: #7c3f00;
+            --game-screen-light: #d4a574;
+            --game-screen-lightest: #f7e7c6;
+        }
+
+        /* Virtual Boy (紅色) */
+        body[data-theme="virtual"] {
+            --game-screen-bg: #ff0000;
+            --game-screen-dark: #550000;
+            --game-screen-light: #aa0000;
+            --game-screen-lightest: #ff0000;
+        }
+
+        /* Game Boy Color - 藍色 */
+        body[data-theme="color-blue"] {
+            --game-screen-bg: #6bb6ff;
+            --game-screen-dark: #003d7a;
+            --game-screen-light: #2e8bc0;
+            --game-screen-lightest: #6bb6ff;
+        }
+
+        /* Game Boy Color - 紫色 */
+        body[data-theme="color-purple"] {
+            --game-screen-bg: #d4a5ff;
+            --game-screen-dark: #4a148c;
+            --game-screen-light: #7b3fb2;
+            --game-screen-lightest: #d4a5ff;
+        }
+
+        /* 黑白經典 */
+        body[data-theme="mono"] {
+            --game-screen-bg: #e0e0e0;
+            --game-screen-dark: #1a1a1a;
+            --game-screen-light: #6a6a6a;
+            --game-screen-lightest: #e0e0e0;
+        }
+
+        /* 琥珀色 CRT */
+        body[data-theme="amber"] {
+            --game-screen-bg: #ffb000;
+            --game-screen-dark: #3d2800;
+            --game-screen-light: #cc8800;
+            --game-screen-lightest: #ffb000;
         }
 
         * {
@@ -33,96 +86,152 @@
         }
 
         body {
-            font-family: 'Zen Maru Gothic', sans-serif;
-            background-color: var(--ac-green);
-            /* 更細緻的斜紋背景 */
-            background-image:
-                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255, 255, 255, 0.2) 20px, rgba(255, 255, 255, 0.2) 40px);
+            font-family: 'DotGothic16', sans-serif;
+            background-color: #222;
             min-height: 100vh;
-            color: var(--ac-dark);
-            /* 防止 iOS 左右滑動 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow-x: hidden;
-            padding-bottom: 20px;
+            padding: 20px 0;
+            transition: all 0.3s ease;
         }
 
-        /* 頂部狀態列 */
+        .game-console {
+            background-color: var(--game-body);
+            width: 360px;
+            padding: 20px 20px 40px 20px;
+            border-radius: 10px 10px 40px 10px;
+            box-shadow:
+                inset -5px -5px 10px rgba(0, 0, 0, 0.2),
+                inset 5px 5px 10px rgba(255, 255, 255, 0.5),
+                10px 10px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .screen-bezel {
+            background-color: #555;
+            width: 100%;
+            padding: 30px 30px 10px 30px;
+            border-radius: 10px 10px 30px 10px;
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .brand-text {
+            color: #b0b0b0;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .battery-light {
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #f00;
+            animation: battery-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes battery-pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                box-shadow: 0 0 3px #f00;
+            }
+
+            50% {
+                opacity: 1;
+                box-shadow: 0 0 15px #f00, 0 0 5px #ff6666 inset;
+            }
+        }
+
+        .lcd-screen {
+            background-color: var(--game-screen-bg);
+            width: 100%;
+            height: 400px;
+            border: 4px solid #444;
+            box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            color: var(--game-screen-dark);
+            background-image:
+                linear-gradient(transparent 95%, rgba(15, 56, 15, 0.1) 50%);
+            background-size: 100% 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .content-wrapper {
+            padding: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
         .status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--game-screen-dark);
+            margin-bottom: 10px;
         }
 
         .location-pill {
-            background: var(--ac-yellow);
-            color: var(--ac-brown);
-            padding: 5px 15px;
-            border-radius: 20px;
             font-weight: 900;
-            font-size: 1.1rem;
-            transform: rotate(-2deg);
-            border: 2px solid white;
-            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            font-size: 0.95rem;
         }
 
         .update-pill {
-            font-size: 0.8rem;
-            color: white;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 4px 10px;
-            border-radius: 12px;
+            font-size: 0.7rem;
+            background: var(--game-screen-dark);
+            color: var(--game-screen-bg);
+            padding: 2px 5px;
         }
 
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            /* 限制在大手機寬度 */
-            margin: 0 auto;
-        }
-
-        /* === 核心：今日焦點卡片 === */
         .hero-card {
-            background: var(--ac-cream);
-            border-radius: 35px;
-            padding: 30px 25px;
+            border: 2px solid var(--game-screen-dark);
+            padding: 15px 8px 10px 8px;
             text-align: center;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            border: 4px solid white;
-            margin-bottom: 25px;
             position: relative;
+            background: rgba(15, 56, 15, 0.05);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* 像動森的對話氣泡 */
         .hero-period {
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--ac-blue);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
+            background: var(--game-screen-bg);
+            color: var(--game-screen-dark);
+            padding: 0 10px;
             font-weight: bold;
-            border: 3px solid white;
-            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--game-screen-dark);
         }
 
         .hero-temp-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 8px 0;
         }
 
         .hero-icon {
-            font-size: 5rem;
-            filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.1));
+            font-size: 3.2rem;
+            filter: drop-shadow(2px 2px 0 var(--game-screen-dark));
             animation: bounce 3s infinite;
         }
 
@@ -134,153 +243,353 @@
             }
 
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-5px);
             }
         }
 
         .hero-temp {
-            font-size: 4.5rem;
+            font-size: 3rem;
             font-weight: 900;
-            color: var(--ac-brown);
             line-height: 1;
         }
 
         .hero-desc {
-            font-size: 1.5rem;
-            color: #8A7B70;
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
             font-weight: bold;
         }
 
-        /* === 上班族最愛的：快速建議區 === */
         .advice-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px dashed #E0D8C0;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed var(--game-screen-dark);
         }
 
         .advice-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 10px;
-            border-radius: 20px;
+            border: 2px solid var(--game-screen-dark);
+            padding: 4px;
+            background: var(--game-screen-bg);
         }
 
         .advice-icon {
-            font-size: 2rem;
-            margin-bottom: 5px;
+            font-size: 1.3rem;
         }
 
         .advice-text {
-            font-size: 1.4rem;
+            font-size: 0.9rem;
             font-weight: 900;
-            color: var(--ac-brown);
-            margin: 5px 0;
-            line-height: 1.2;
+            margin: 2px 0;
         }
 
-        /* === 稍後預報：橫向滑動區 === */
-        .section-title {
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 15px;
-            margin-left: 10px;
-            font-weight: 900;
-            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
-        }
-
-        .scroll-container {
+        .controls-area {
+            width: 100%;
             display: flex;
-            overflow-x: auto;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 20px;
+        }
+
+        .d-pad {
+            width: 90px;
+            height: 90px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .d-pad div {
+            background: #333;
+            position: absolute;
+            border-radius: 3px;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .d-pad.pressed div:not(.d-pad-center):not(.d-pad-button) {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+
+        .d-pad-h {
+            width: 100%;
+            height: 30px;
+            top: 30px;
+            left: 0;
+        }
+
+        .d-pad-v {
+            width: 30px;
+            height: 100%;
+            top: 0;
+            left: 30px;
+        }
+
+        .d-pad-center {
+            width: 30px;
+            height: 30px;
+            top: 30px;
+            left: 30px;
+            background: #2a2a2a !important;
+            z-index: 2;
+            box-shadow: none !important;
+        }
+
+        .d-pad-button {
+            position: absolute;
+            z-index: 15;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .d-pad-up {
+            top: 0;
+            left: 30px;
+            width: 30px;
+            height: 30px;
+        }
+
+        .d-pad-down {
+            bottom: 0;
+            left: 30px;
+            width: 30px;
+            height: 30px;
+        }
+
+        .d-pad-left {
+            top: 30px;
+            left: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .d-pad-right {
+            top: 30px;
+            right: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .action-btns {
+            display: flex;
             gap: 15px;
-            padding-bottom: 10px;
-            /* 隱藏滾動條但保留功能 */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+            transform: rotate(-15deg);
         }
 
-        .scroll-container::-webkit-scrollbar {
-            display: none;
+        .btn {
+            width: 35px;
+            height: 35px;
+            background: #A00;
+            border-radius: 50%;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
         }
 
-        .mini-card {
-            min-width: 140px;
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 25px;
-            padding: 20px 15px;
-            text-align: center;
-            border: 3px solid white;
-            flex-shrink: 0;
-            /* 防止被擠壓 */
+        .btn.pressed {
+            transform: translate(2px, 2px);
+            box-shadow: none;
         }
 
-        .mini-time {
-            background: var(--ac-green);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 10px;
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            right: 0;
             font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 10px;
             font-weight: bold;
+            color: #555;
         }
 
-        .mini-icon {
-            font-size: 2.5rem;
-            margin: 5px 0;
+        .btn-a::after {
+            content: 'A';
         }
 
-        .mini-temp {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--ac-dark);
+        .btn-b::after {
+            content: 'B';
         }
 
-        /* Loading 畫面 */
+        .start-select {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .pill-btn {
+            width: 40px;
+            height: 12px;
+            background: #999;
+            border-radius: 10px;
+            transform: rotate(-15deg);
+            border: 1px solid #777;
+        }
+
         .loading-screen {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--ac-green);
+            width: 100%;
+            height: 100%;
+            background: var(--game-screen-bg);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
+            color: var(--game-screen-dark);
+        }
+
+        .loading-bar-container {
+            width: 80%;
+            height: 20px;
+            border: 2px solid var(--game-screen-dark);
+            padding: 2px;
+            margin-top: 10px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: var(--game-screen-dark);
+            width: 0%;
+            animation: loadProgress 1.5s steps(5) forwards;
+        }
+
+        @keyframes loadProgress {
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        .blink-text {
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* 主題指示器 */
+        .theme-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 0.6rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 
 <body>
-    <div id="loading" class="loading-screen">
-        <div style="font-size: 4rem; animation: bounce 2s infinite;">☁️</div>
-        <p style="color: white; font-weight: bold; margin-top: 20px;">正在觀測雲的流動...</p>
-    </div>
-    <div class="status-bar">
-        <div class="location-pill">📍 高雄</div>
-        <div id="updateTime" class="update-pill">更新中...</div>
-    </div>
+    <div class="game-console">
+        <div class="screen-bezel">
+            <div class="brand-text">
+                <span>PORTABLE WEATHER SYSTEM</span>
+                <div class="battery-light"></div>
+            </div>
 
-    <div class="container" id="mainContent" style="display: none;">
+            <div class="lcd-screen">
+                <div id="loading" class="loading-screen">
+                    <div style="font-size: 1.5rem; font-weight: bold;">點點天氣</div>
+                    <div style="font-size: 0.8rem; margin-top:5px;">載入中</div>
+                    <div class="loading-bar-container">
+                        <div class="loading-bar"></div>
+                    </div>
+                    <div class="blink-text" style="margin-top: 10px; font-size: 0.8rem;">請稍候...</div>
+                </div>
 
-        <div id="heroCard">
+                <div class="content-wrapper" id="mainContent" style="display: none;">
+                    <div class="status-bar">
+                        <div id="locationPill" class="location-pill">📍 載入中...</div>
+                        <div id="updateTime" class="update-pill">更新中...</div>
+                    </div>
+
+                    <div id="heroCard"></div>
+
+                    <div style="text-align: center; margin-top: 8px; font-size: 0.65rem; opacity: 0.6;">
+                        ←→ 切換城市 | ↑↓ 切換時段 | A/B 換色
+                    </div>
+
+                    <div id="themeIndicator" class="theme-indicator">經典綠</div>
+                </div>
+            </div>
         </div>
 
-        <h3 class="section-title">稍後預報</h3>
-        <div class="scroll-container" id="futureForecasts">
+        <div class="controls-area">
+            <div class="d-pad">
+                <div class="d-pad-h"></div>
+                <div class="d-pad-v"></div>
+                <div class="d-pad-center"></div>
+                <div class="d-pad-button d-pad-up" data-direction="up"></div>
+                <div class="d-pad-button d-pad-down" data-direction="down"></div>
+                <div class="d-pad-button d-pad-left" data-direction="left"></div>
+                <div class="d-pad-button d-pad-right" data-direction="right"></div>
+            </div>
+            <div class="action-btns">
+                <div class="btn btn-b"></div>
+                <div class="btn btn-a"></div>
+            </div>
         </div>
 
+        <div class="start-select">
+            <div class="pill-btn"></div>
+            <div class="pill-btn"></div>
+        </div>
     </div>
 
     <script>
-        const API_URL = "https://cwa-backend-api.zeabur.app/api/weather/kaohsiung";
+        const API_URL = "https://ntpc-weather.zeabur.app/api/weather/AllCounties";
+
+        // 色彩主題配置
+        const themes = [
+            { name: 'classic', label: '經典綠', attr: null },
+            { name: 'pocket', label: '灰階', attr: 'pocket' },
+            { name: 'light', label: '金色', attr: 'light' },
+            { name: 'virtual', label: '紅色', attr: 'virtual' },
+            { name: 'color-blue', label: '藍色', attr: 'color-blue' },
+            { name: 'color-purple', label: '紫色', attr: 'color-purple' },
+            { name: 'mono', label: '黑白', attr: 'mono' },
+            { name: 'amber', label: '琥珀', attr: 'amber' }
+        ];
+
+        let currentThemeIndex = 0;
+
+        function changeTheme(direction) {
+            if (direction === 'next') {
+                currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            } else {
+                currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length;
+            }
+
+            const theme = themes[currentThemeIndex];
+
+            if (theme.attr) {
+                document.body.setAttribute('data-theme', theme.attr);
+            } else {
+                document.body.removeAttribute('data-theme');
+            }
+
+            document.getElementById('themeIndicator').textContent = theme.label;
+            console.log('切換主題:', theme.label);
+        }
 
         function getWeatherIcon(weather) {
             if (!weather) return "🌤️";
@@ -294,20 +603,20 @@
 
         function getAdvice(rainProb, maxTemp) {
             let rainIcon = "🌂";
-            let rainText = "不用帶傘";
+            let rainText = "免帶傘 穩";
             if (parseInt(rainProb) > 30) {
                 rainIcon = "☂️";
-                rainText = "記得帶傘！";
+                rainText = "帶傘啦 濕";
             }
 
             let clothIcon = "👕";
-            let clothText = "舒適穿搭";
+            let clothText = "舒適 懂穿";
             if (parseInt(maxTemp) >= 28) {
                 clothIcon = "🎽";
-                clothText = "短袖出發";
+                clothText = "熱鼠 短袖";
             } else if (parseInt(maxTemp) <= 20) {
                 clothIcon = "🧥";
-                clothText = "加件外套";
+                clothText = "冷喔 外套";
             }
 
             return { rainIcon, rainText, clothIcon, clothText };
@@ -322,92 +631,165 @@
             return "深夜";
         }
 
-        function renderWeather(data) {
-            const forecasts = data.forecasts;
-            const current = forecasts[0];
-            const others = forecasts.slice(1);
+        let currentForecastIndex = 0;
+        let currentCityIndex = 0;
+        let allCities = [];
+        let userCity = null;
 
-            // 1. 渲染 Hero Card (主畫面)
+        const cityMapping = {
+            '台北市': '臺北市',
+            '臺北市': '臺北市',
+            '新北市': '新北市',
+            '桃園市': '桃園市',
+            '台中市': '臺中市',
+            '臺中市': '臺中市',
+            '台南市': '臺南市',
+            '臺南市': '臺南市',
+            '高雄市': '高雄市',
+            '基隆市': '基隆市',
+            '新竹市': '新竹市',
+            '嘉義市': '嘉義市',
+            '新竹縣': '新竹縣',
+            '苗栗縣': '苗栗縣',
+            '彰化縣': '彰化縣',
+            '南投縣': '南投縣',
+            '雲林縣': '雲林縣',
+            '嘉義縣': '嘉義縣',
+            '屏東縣': '屏東縣',
+            '宜蘭縣': '宜蘭縣',
+            '花蓮縣': '花蓮縣',
+            '台東縣': '臺東縣',
+            '臺東縣': '臺東縣',
+            '澎湖縣': '澎湖縣',
+            '金門縣': '金門縣',
+            '連江縣': '連江縣'
+        };
+
+        function renderWeather(data) {
+            allCities = data;
+            currentCityIndex = 0;
+            currentForecastIndex = 0;
+
+            if (userCity) {
+                const cityIndex = allCities.findIndex(city => city.city === userCity);
+                if (cityIndex !== -1) {
+                    currentCityIndex = cityIndex;
+                    console.log('已切換到用戶城市:', userCity);
+                }
+            }
+
+            renderCurrentForecast();
+        }
+
+        function renderCurrentForecast() {
+            if (allCities.length === 0) return;
+
+            const currentCity = allCities[currentCityIndex];
+            const allForecasts = currentCity.forecasts;
+
+            if (allForecasts.length === 0) return;
+
+            const current = allForecasts[currentForecastIndex];
+            const totalCount = allForecasts.length;
+
             const advice = getAdvice(current.rain, current.maxTemp);
             const period = getTimePeriod(current.startTime);
             const avgTemp = Math.round((parseInt(current.maxTemp) + parseInt(current.minTemp)) / 2);
 
+            const currentDate = new Date(current.startTime);
+            const today = new Date();
+            const isToday = currentDate.getDate() === today.getDate();
+            const dayLabel = isToday ? "今天" : "明天";
+
             document.getElementById('heroCard').innerHTML = `
-                        <div class="hero-card">
-                            <div class="hero-period">${period}</div>
-                            <div class="hero-temp-container">
-                                <div class="hero-icon">${getWeatherIcon(current.weather)}</div>
-                                <div class="hero-temp">${avgTemp}°</div>
-                            </div>
-                            <div class="hero-desc">${current.weather}</div>
-                            
-                            <div class="advice-grid">
-                                <div class="advice-item">
-                                    <div class="advice-icon">${advice.rainIcon}</div>
-                                    <div class="advice-text">${advice.rainText}</div>
-                                    <div style="font-size:0.7rem; color:#999">降雨率 ${current.rain}</div>
-                                </div>
-                                <div class="advice-item">
-                                    <div class="advice-icon">${advice.clothIcon}</div>
-                                    <div class="advice-text">${advice.clothText}</div>
-                                    <div style="font-size:0.7rem; color:#999">最高溫 ${current.maxTemp}°</div>
-                                </div>
-                            </div>
+                <div class="hero-card">
+                    <div class="hero-period">${dayLabel} ${period}</div>
+                    <div class="hero-temp-container">
+                        <div class="hero-icon">${getWeatherIcon(current.weather)}</div>
+                        <div class="hero-temp">${avgTemp}°</div>
+                    </div>
+                    <div class="hero-desc">${current.weather}</div>
+                    
+                    <div class="advice-grid">
+                        <div class="advice-item">
+                            <div class="advice-icon">${advice.rainIcon}</div>
+                            <div class="advice-text">${advice.rainText}</div>
+                            <div style="font-size:0.65rem;">降雨率 ${current.rain}</div>
                         </div>
-                    `;
+                        <div class="advice-item">
+                            <div class="advice-icon">${advice.clothIcon}</div>
+                            <div class="advice-text">${advice.clothText}</div>
+                            <div style="font-size:0.65rem;">最高溫 ${current.maxTemp}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 10px; font-size: 0.65rem; opacity: 0.7;">
+                        時段 ${currentForecastIndex + 1}/${totalCount}
+                    </div>
+                </div>
+            `;
 
-            // 2. 渲染稍後預報 (包含明天判斷)
-            const scrollContainer = document.getElementById('futureForecasts');
-            scrollContainer.innerHTML = '';
+            document.getElementById('locationPill').textContent = `📍 ${currentCity.city} (${currentCityIndex + 1}/${allCities.length})`;
 
-            // 抓今天的日期數字 (例如 24)
-            const todayDate = new Date().getDate();
-
-            others.forEach(f => {
-                let p = getTimePeriod(f.startTime);
-
-                // 判斷該預報的日期是否跟今天不同，不同就是明天
-                const fDate = new Date(f.startTime);
-                if (fDate.getDate() !== todayDate) {
-                    p = "明天" + p;
-                }
-
-                scrollContainer.innerHTML += `
-                            <div class="mini-card">
-                                <div class="mini-time">${p}</div>
-                                <div class="mini-icon">${getWeatherIcon(f.weather)}</div>
-                                <div class="mini-temp">${f.minTemp}° - ${f.maxTemp}°</div>
-                                <div style="font-size:0.8rem; color:#888; margin-top:5px;">💧${f.rain}</div>
-                            </div>
-                        `;
-            });
-
-            // 3. 右上角顯示今日日期
             const now = new Date();
             const month = now.getMonth() + 1;
             const date = now.getDate();
             const dayIndex = now.getDay();
             const days = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
+            document.getElementById('updateTime').textContent = `${month}/${date} ${days[dayIndex]}`;
+        }
 
-            document.getElementById('updateTime').textContent = `${month}月${date}日 ${days[dayIndex]}`;
+        async function detectUserCity() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) {
+                    console.log('瀏覽器不支援地理位置');
+                    resolve(null);
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        try {
+                            const { latitude, longitude } = position.coords;
+                            const response = await fetch(
+                                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=zh-TW`
+                            );
+                            const data = await response.json();
+
+                            const city = data.address.city || data.address.county || data.address.state;
+                            console.log('偵測到的城市:', city);
+
+                            const mappedCity = cityMapping[city] || city;
+                            resolve(mappedCity);
+                        } catch (error) {
+                            console.error('反向地理編碼錯誤:', error);
+                            resolve(null);
+                        }
+                    },
+                    (error) => {
+                        console.log('無法獲取地理位置:', error.message);
+                        resolve(null);
+                    },
+                    {
+                        timeout: 5000,
+                        maximumAge: 0
+                    }
+                );
+            });
         }
 
         async function fetchWeather() {
             try {
-                // 1. 定義「最低等待時間」：1500 毫秒 (1.5秒)
-                const delayPromise = new Promise(resolve => setTimeout(resolve, 1500));
-
-                // 2. 定義「抓取資料」的工作
+                const delayPromise = new Promise(resolve => setTimeout(resolve, 2000));
                 const fetchPromise = fetch(API_URL).then(res => res.json());
+                const cityPromise = detectUserCity();
 
-                // 3. Promise.all 會等待「兩個都完成」才會往下走
-                // result 陣列裡，第一個是 delay 的結果(沒用到)，第二個是 api 的 json 資料
-                const [_, json] = await Promise.all([delayPromise, fetchPromise]);
+                const [_, json, detectedCity] = await Promise.all([delayPromise, fetchPromise, cityPromise]);
+
+                userCity = detectedCity;
+                console.log('用戶城市設定為:', userCity);
 
                 if (json.success) {
                     renderWeather(json.data);
-
-                    // 資料處理好後，隱藏 Loading，顯示主畫面
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('mainContent').style.display = 'block';
                 } else {
@@ -415,11 +797,159 @@
                 }
             } catch (e) {
                 console.error(e);
-                alert("天氣資料讀取失敗，狸克把網路線咬斷了！");
+                alert("連線錯誤！請檢查網路。");
             }
         }
 
         document.addEventListener("DOMContentLoaded", fetchWeather);
+
+        const dPad = document.querySelector('.d-pad');
+        const btnA = document.querySelector('.btn-a');
+        const btnB = document.querySelector('.btn-b');
+
+        function addPressEffect(element) {
+            element.addEventListener('mousedown', () => {
+                element.classList.add('pressed');
+            });
+            element.addEventListener('mouseup', () => {
+                element.classList.remove('pressed');
+            });
+            element.addEventListener('mouseleave', () => {
+                element.classList.remove('pressed');
+            });
+        }
+
+        // D-pad 方向按鈕點擊事件
+        document.querySelectorAll('.d-pad-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const direction = button.dataset.direction;
+
+                dPad.classList.add('pressed');
+                setTimeout(() => {
+                    dPad.classList.remove('pressed');
+                }, 150);
+
+                switch (direction) {
+                    case 'up':
+                        if (allCities.length > 0 && allCities[currentCityIndex].forecasts.length > 0) {
+                            const totalForecasts = allCities[currentCityIndex].forecasts.length;
+                            currentForecastIndex = (currentForecastIndex - 1 + totalForecasts) % totalForecasts;
+                            renderCurrentForecast();
+                        }
+                        break;
+                    case 'down':
+                        if (allCities.length > 0 && allCities[currentCityIndex].forecasts.length > 0) {
+                            const totalForecasts = allCities[currentCityIndex].forecasts.length;
+                            currentForecastIndex = (currentForecastIndex + 1) % totalForecasts;
+                            renderCurrentForecast();
+                        }
+                        break;
+                    case 'left':
+                        if (allCities.length > 0) {
+                            currentCityIndex = (currentCityIndex - 1 + allCities.length) % allCities.length;
+                            currentForecastIndex = 0;
+                            renderCurrentForecast();
+                        }
+                        break;
+                    case 'right':
+                        if (allCities.length > 0) {
+                            currentCityIndex = (currentCityIndex + 1) % allCities.length;
+                            currentForecastIndex = 0;
+                            renderCurrentForecast();
+                        }
+                        break;
+                }
+            });
+        });
+
+        // A/B 按鈕點擊事件 - 切換主題
+        btnA.addEventListener('click', () => {
+            changeTheme('next');
+        });
+
+        btnB.addEventListener('click', () => {
+            changeTheme('prev');
+        });
+
+        addPressEffect(btnA);
+        addPressEffect(btnB);
+
+        const keyHandlers = {
+            'ArrowUp': () => {
+                dPad.classList.add('pressed');
+                if (allCities.length > 0 && allCities[currentCityIndex].forecasts.length > 0) {
+                    const totalForecasts = allCities[currentCityIndex].forecasts.length;
+                    currentForecastIndex = (currentForecastIndex - 1 + totalForecasts) % totalForecasts;
+                    renderCurrentForecast();
+                }
+            },
+            'ArrowDown': () => {
+                dPad.classList.add('pressed');
+                if (allCities.length > 0 && allCities[currentCityIndex].forecasts.length > 0) {
+                    const totalForecasts = allCities[currentCityIndex].forecasts.length;
+                    currentForecastIndex = (currentForecastIndex + 1) % totalForecasts;
+                    renderCurrentForecast();
+                }
+            },
+            'ArrowLeft': () => {
+                dPad.classList.add('pressed');
+                if (allCities.length > 0) {
+                    currentCityIndex = (currentCityIndex - 1 + allCities.length) % allCities.length;
+                    currentForecastIndex = 0;
+                    renderCurrentForecast();
+                }
+            },
+            'ArrowRight': () => {
+                dPad.classList.add('pressed');
+                if (allCities.length > 0) {
+                    currentCityIndex = (currentCityIndex + 1) % allCities.length;
+                    currentForecastIndex = 0;
+                    renderCurrentForecast();
+                }
+            },
+            'a': () => {
+                btnA.classList.add('pressed');
+                changeTheme('next');
+            },
+            'A': () => {
+                btnA.classList.add('pressed');
+                changeTheme('next');
+            },
+            'z': () => {
+                btnB.classList.add('pressed');
+                changeTheme('prev');
+            },
+            'Z': () => {
+                btnB.classList.add('pressed');
+                changeTheme('prev');
+            }
+        };
+
+        document.addEventListener('keydown', (e) => {
+            const handler = keyHandlers[e.key];
+            if (handler) {
+                const element = e.key.startsWith('Arrow') ? dPad :
+                    (e.key === 'a' || e.key === 'A') ? btnA : btnB;
+                if (!element.classList.contains('pressed')) {
+                    handler();
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key.startsWith('Arrow')) {
+                dPad.classList.remove('pressed');
+                e.preventDefault();
+            } else if (e.key === 'a' || e.key === 'A') {
+                btnA.classList.remove('pressed');
+                e.preventDefault();
+            } else if (e.key === 'z' || e.key === 'Z') {
+                btnB.classList.remove('pressed');
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 
